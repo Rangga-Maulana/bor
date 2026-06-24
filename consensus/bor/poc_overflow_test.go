@@ -8,11 +8,12 @@ import (
 
     "github.com/ethereum/go-ethereum/common"
     "github.com/ethereum/go-ethereum/consensus/bor/clerk"
+    "github.com/ethereum/go-ethereum/consensus/bor/statefull"
+    "github.com/ethereum/go-ethereum/consensus/bor/valset"
     "github.com/ethereum/go-ethereum/core"
     "github.com/ethereum/go-ethereum/core/state"
     "github.com/ethereum/go-ethereum/core/types"
     "github.com/ethereum/go-ethereum/core/vm"
-    "github.com/ethereum/go-ethereum/consensus/bor/statefull"
     "github.com/stretchr/testify/require"
 
     borTypes "github.com/0xPolygon/heimdall-v2/x/bor/types"
@@ -87,7 +88,7 @@ func TestPoC_CommitStates_Uint64Overflow_DoS(t *testing.T) {
             events: []*clerk.EventRecordWithTime{historicalEvent},
         })
 
-        statedb := newStateDBForTest(t, genesis.Root())
+        statedb := newStateDBForTest(t, genesis.Root) // FIXED: Removed ()
         h := &types.Header{Number: big.NewInt(16), ParentHash: genesis.Hash(), Time: uint64(time.Now().Unix())}
 
         // Execute Finalize
@@ -122,7 +123,7 @@ func TestPoC_CommitStates_Uint64Overflow_DoS(t *testing.T) {
             events: []*clerk.EventRecordWithTime{historicalEvent}, 
         })
 
-        statedb := newStateDBForTest(t, genesis.Root())
+        statedb := newStateDBForTest(t, genesis.Root) // FIXED: Removed ()
         h := &types.Header{Number: big.NewInt(16), ParentHash: genesis.Hash(), Time: uint64(time.Now().Unix())}
 
         // Execute Finalize
